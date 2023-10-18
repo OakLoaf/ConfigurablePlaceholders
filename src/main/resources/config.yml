@@ -1,0 +1,15 @@
+placeholders:
+  test:
+    java:
+      rp: "rp"
+      no-rp: "no-rp"
+    bedrock: ""
+  test_2: "test_2"
+  test_3:
+    java: "java"
+    bedrock: "bedrock"
+  test_4:
+    java:
+      rp: "java rp"
+      no-rp: "java no-rp"
+    bedrock: "other"
