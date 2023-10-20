@@ -4,8 +4,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class Placeholder {
     private final String content;
-    private JavaPlaceholder javaPlaceholder;
-    private BedrockPlaceholder bedrockPlaceholder;
+    private JavaPlaceholder javaPlaceholder = null;
+    private BedrockPlaceholder bedrockPlaceholder = null;
 
     public Placeholder(String content) {
         this.content = content;

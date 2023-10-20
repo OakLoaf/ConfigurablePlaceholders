@@ -7,10 +7,11 @@ import me.dave.configurableplaceholders.placeholder.Placeholder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ConfigManager {
-    private final HashMap<String, Placeholder> placeholders = new HashMap<>();
+    private final ConcurrentHashMap<String, Placeholder> placeholders = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, String> messages = new ConcurrentHashMap<>();
 
     public ConfigManager() {
         ConfigurablePlaceholders.getInstance().saveDefaultConfig();
@@ -21,37 +22,47 @@ public class ConfigManager {
         FileConfiguration config = ConfigurablePlaceholders.getInstance().getConfig();
 
         ConfigurationSection placeholdersSection = config.getConfigurationSection("placeholders");
-        placeholdersSection.getValues(false).forEach((key, value) -> {
-            if (value instanceof ConfigurationSection placeholderSection) {
-                String defaultContent = placeholderSection.getString("content");
-                Placeholder placeholder = new Placeholder(defaultContent);
+        if (placeholdersSection != null) {
+            placeholdersSection.getValues(false).forEach((key, value) -> {
+                if (value instanceof ConfigurationSection placeholderSection) {
+                    String defaultContent = placeholderSection.getString("content");
+                    Placeholder placeholder = new Placeholder(defaultContent);
 
-                JavaPlaceholder javaPlaceholder;
-                String javaContent = placeholderSection.getString("java");
-                if (javaContent != null) {
-                    javaPlaceholder = new JavaPlaceholder(javaContent);
-                } else {
-                    ConfigurationSection javaSection = placeholderSection.getConfigurationSection("java");
-                    if (javaSection != null) {
-                        String defaultJavaContent = javaSection.getString("default");
-                        String rp = javaSection.getString("rp");
-                        String noRp = javaSection.getString("no-rp");
-                        javaPlaceholder = new JavaPlaceholder(defaultJavaContent, rp, noRp);
-                    } else {
-                        javaPlaceholder = null;
+                    if (placeholderSection.contains("java")) {
+                        placeholder.setJavaPlaceholder(new JavaPlaceholder(placeholderSection.getString("java.default"), placeholderSection.getString("java.rp"), placeholderSection.getString("java.no-rp")));
                     }
-                }
-                placeholder.setJavaPlaceholder(javaPlaceholder);
-                placeholder.setBedrockPlaceholder(new BedrockPlaceholder(config.getString("bedrock")));
+                    if (placeholderSection.contains("bedrock")) {
+                        placeholder.setBedrockPlaceholder(new BedrockPlaceholder(placeholderSection.getString("bedrock")));
+                    }
 
-                placeholders.put(key, placeholder);
-            } else {
-                placeholders.put(key, new Placeholder(placeholdersSection.getString(key)));
-            }
-        });
+                    placeholders.put(key, placeholder);
+                } else {
+                    placeholders.put(key, new Placeholder(placeholdersSection.getString(key)));
+                }
+            });
+        }
+
+        // Clears messages map
+        messages.clear();
+        // Checks if messages section exists
+        ConfigurationSection messagesSection = config.getConfigurationSection("messages");
+        if (messagesSection != null) {
+            // Repopulates messages map
+            messagesSection.getValues(false).forEach((key, value) -> messages.put(key, (String) value));
+        }
     }
 
     public Placeholder getPlaceholder(String placeholder) {
         return placeholders.get(placeholder);
+    }
+
+    public String getMessage(String messageName) {
+        String output = messages.getOrDefault(messageName, "");
+
+        if (messages.containsKey("prefix")) {
+            return output.replaceAll("%prefix%", messages.get("prefix"));
+        } else {
+            return output;
+        }
     }
 }

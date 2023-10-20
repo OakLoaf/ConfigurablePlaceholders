@@ -4,12 +4,19 @@ placeholders:
       rp: "rp"
       no-rp: "no-rp"
     bedrock: ""
-  test_2: "test_2"
+  test_2:
+    content: "test_2"
   test_3:
-    java: "java"
+    java:
+      default: "java"
     bedrock: "bedrock"
   test_4:
     java:
       rp: "java rp"
       no-rp: "java no-rp"
     bedrock: "other"
+
+messages:
+  prefix: ""
+  no-permissions: "&#ff6969Insufficient permissions"
+  reload: "&#b7faa2ConfigurablePlaceholders has been reloaded &#66b04f🔃"
