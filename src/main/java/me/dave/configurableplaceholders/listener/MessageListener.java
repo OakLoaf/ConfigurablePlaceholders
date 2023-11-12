@@ -23,11 +23,23 @@ public class MessageListener implements PluginMessageListener {
             long uuidLeastSignificantBits = in.readLong();
             String packName = in.readUTF();
 
+            if (ConfigurablePlaceholders.getConfigManager().isDebugEnabled()) {
+                ConfigurablePlaceholders.getInstance().getLogger().info("DEBUG >> Received 'packChange' for '" + player.getUniqueId() + "' (" + playerName + ") using pack: '" + packName +"'");
+            }
+
             if (packName.equals("mainpack")) {
                 ConfigurablePlaceholders.getResourcePackChecker().addPlayer(player.getUniqueId());
             } else {
                 ConfigurablePlaceholders.getResourcePackChecker().removePlayer(player.getUniqueId());
             }
+        } else if (subchannel.equals("clearPack")) {
+            String playerName = in.readUTF();
+
+            if (ConfigurablePlaceholders.getConfigManager().isDebugEnabled()) {
+                ConfigurablePlaceholders.getInstance().getLogger().info("DEBUG >> Received 'clearPack' for '" + player.getUniqueId() + "' (" + playerName + ")");
+            }
+
+            ConfigurablePlaceholders.getResourcePackChecker().removePlayer(player.getUniqueId());
         }
     }
 }

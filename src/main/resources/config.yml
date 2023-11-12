@@ -20,3 +20,5 @@ messages:
   prefix: ""
   no-permissions: "&#ff6969Insufficient permissions"
   reload: "&#b7faa2ConfigurablePlaceholders has been reloaded &#66b04f🔃"
+
+debug: false

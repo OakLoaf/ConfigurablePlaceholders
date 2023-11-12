@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ConfigManager {
     private final ConcurrentHashMap<String, Placeholder> placeholders = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, String> messages = new ConcurrentHashMap<>();
+    private boolean debug = false;
 
     public ConfigManager() {
         ConfigurablePlaceholders.getInstance().saveDefaultConfig();
@@ -50,6 +51,8 @@ public class ConfigManager {
             // Repopulates messages map
             messagesSection.getValues(false).forEach((key, value) -> messages.put(key, (String) value));
         }
+
+        debug = config.getBoolean("debug");
     }
 
     public Placeholder getPlaceholder(String placeholder) {
@@ -64,5 +67,9 @@ public class ConfigManager {
         } else {
             return output;
         }
+    }
+
+    public boolean isDebugEnabled() {
+        return debug;
     }
 }
