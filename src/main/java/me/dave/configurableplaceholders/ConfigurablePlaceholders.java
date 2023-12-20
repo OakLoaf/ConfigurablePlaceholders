@@ -2,13 +2,15 @@ package me.dave.configurableplaceholders;
 
 import me.dave.configurableplaceholders.command.MainCmd;
 import me.dave.configurableplaceholders.config.ConfigManager;
-import me.dave.configurableplaceholders.hook.PlaceholderAPIExpansion;
+import me.dave.configurableplaceholders.hook.ConfigPapiExpansion;
+import me.dave.configurableplaceholders.hook.FormatterPapiExpansion;
 import me.dave.configurableplaceholders.listener.MessageListener;
 import me.dave.configurableplaceholders.util.ResourcePackChecker;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class ConfigurablePlaceholders extends JavaPlugin {
-    private static PlaceholderAPIExpansion placeholderAPIExpansion;
+    private static ConfigPapiExpansion configPapiExpansion;
+    private static FormatterPapiExpansion formatterPapiExpansion;
 
     private static ConfigurablePlaceholders plugin;
 
@@ -24,8 +26,11 @@ public final class ConfigurablePlaceholders extends JavaPlugin {
 
         resourcePackChecker = new ResourcePackChecker();
 
-        placeholderAPIExpansion = new PlaceholderAPIExpansion();
-        placeholderAPIExpansion.register();
+        configPapiExpansion = new ConfigPapiExpansion();
+        configPapiExpansion.register();
+
+        formatterPapiExpansion = new FormatterPapiExpansion();
+        formatterPapiExpansion.register();
 
         getCommand("configurableplaceholders").setExecutor(new MainCmd());
 
@@ -38,9 +43,14 @@ public final class ConfigurablePlaceholders extends JavaPlugin {
     public void onDisable() {
         getServer().getMessenger().unregisterIncomingPluginChannel(plugin);
 
-        if (placeholderAPIExpansion != null) {
-            placeholderAPIExpansion.unregister();
-            placeholderAPIExpansion = null;
+        if (configPapiExpansion != null) {
+            configPapiExpansion.unregister();
+            configPapiExpansion = null;
+        }
+
+        if (formatterPapiExpansion != null) {
+            formatterPapiExpansion.unregister();
+            formatterPapiExpansion = null;
         }
 
         resourcePackChecker = null;

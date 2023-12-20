@@ -1,35 +1,25 @@
 package me.dave.configurableplaceholders.placeholder;
 
-import org.jetbrains.annotations.Nullable;
+public record JavaPlaceholder(String content, String rp, String noRp) {
+    public static class Builder {
+        private String content;
+        private String rp;
+        private String noRp;
 
-public class JavaPlaceholder {
-    private final String content;
-    private final String rp;
-    private final String noRp;
+        public void setContent(String content) {
+            this.content = content;
+        }
 
-    public JavaPlaceholder(String content) {
-        this.content = content;
-        this.rp = null;
-        this.noRp = null;
-    }
+        public void setRp(String rp) {
+            this.rp = rp;
+        }
 
-    public JavaPlaceholder(String content, @Nullable String rp, @Nullable String noRp) {
-        this.content = content;
-        this.rp = rp;
-        this.noRp = noRp;
-    }
+        public void setNoRp(String noRp) {
+            this.noRp = noRp;
+        }
 
-    public String getContent() {
-        return content;
-    }
-
-    @Nullable
-    public String getRp() {
-        return rp;
-    }
-
-    @Nullable
-    public String getNoRp() {
-        return noRp;
+        public JavaPlaceholder build() {
+            return new JavaPlaceholder(content, rp, noRp);
+        }
     }
 }
