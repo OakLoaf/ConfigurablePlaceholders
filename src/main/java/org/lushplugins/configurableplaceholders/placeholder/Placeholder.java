@@ -1,6 +1,6 @@
-package me.dave.configurableplaceholders.placeholder;
+package org.lushplugins.configurableplaceholders.placeholder;
 
-import me.dave.configurableplaceholders.ConfigurablePlaceholders;
+import org.lushplugins.configurableplaceholders.ConfigurablePlaceholders;
 import org.bukkit.entity.Player;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.jetbrains.annotations.Nullable;
@@ -59,7 +59,7 @@ public class Placeholder {
                     String content = javaPlaceholder.content();
                     String rp = javaPlaceholder.rp();
                     String noRp = javaPlaceholder.noRp();
-                    boolean hasPack = ConfigurablePlaceholders.getResourcePackChecker().hasResourcePack(player.getUniqueId());
+                    boolean hasPack = ConfigurablePlaceholders.getInstance().getPlayerPackCache().hasPack(player.getUniqueId());
 
                     if (rp != null && hasPack) {
                         return rp;

@@ -1,4 +1,4 @@
-package me.dave.configurableplaceholders.placeholder;
+package org.lushplugins.configurableplaceholders.placeholder;
 
 public record BedrockPlaceholder(String content) {
     public static class Builder {

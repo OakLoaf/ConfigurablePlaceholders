@@ -1,9 +1,9 @@
-package me.dave.configurableplaceholders.config;
+package org.lushplugins.configurableplaceholders.config;
 
-import me.dave.configurableplaceholders.ConfigurablePlaceholders;
-import me.dave.configurableplaceholders.placeholder.BedrockPlaceholder;
-import me.dave.configurableplaceholders.placeholder.JavaPlaceholder;
-import me.dave.configurableplaceholders.placeholder.Placeholder;
+import org.lushplugins.configurableplaceholders.ConfigurablePlaceholders;
+import org.lushplugins.configurableplaceholders.placeholder.BedrockPlaceholder;
+import org.lushplugins.configurableplaceholders.placeholder.JavaPlaceholder;
+import org.lushplugins.configurableplaceholders.placeholder.Placeholder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 

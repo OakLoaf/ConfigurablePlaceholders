@@ -1,4 +1,4 @@
-package me.dave.configurableplaceholders.placeholder;
+package org.lushplugins.configurableplaceholders.placeholder;
 
 public record JavaPlaceholder(String content, String rp, String noRp) {
     public static class Builder {

@@ -1,51 +1,77 @@
 plugins {
-    java
-    `maven-publish`
-    id("com.github.johnrengelman.shadow") version("8.1.1")
+    `java-library`
+    id("com.gradleup.shadow") version("9.3.1")
+    id("xyz.jpenilla.run-paper") version("3.0.2")
 }
 
 group = "me.dave"
 version = "1.1-BETA"
+group = "org.lushplugins"
+version = "2.0.0"
 
 repositories {
-    mavenCentral()
     mavenLocal()
-    maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
-    maven { url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/") }
-    maven { url = uri("https://repo.opencollab.dev/main/") }
-    maven { url = uri("https://jitpack.io") }
+    mavenCentral()
+    maven("https://oss.sonatype.org/content/groups/public/")
+    maven("https://repo.papermc.io/repository/maven-public/") // Paper
+    maven("https://repo.helpch.at/releases") // PlaceholderAPI
+    maven("https://repo.opencollab.dev/main/") // Floodgate
+    maven("https://repo.lushplugins.org/snapshots/") // ChatColorHandler
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.20-R0.1-SNAPSHOT")
-    compileOnly("me.clip:placeholderapi:2.11.4")
+    // Dependencies
+    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    compileOnly("me.clip:placeholderapi:2.12.3")
     compileOnly("org.geysermc.floodgate:api:2.0-SNAPSHOT")
-    implementation("com.github.CoolDCB:ChatColorHandler:v2.1.5")
+
+    // Libraries
+    implementation("org.lushplugins.chatcolorhandler:paper:8.1.1")
+    implementation("io.github.revxrsal:lamp.common:4.0.0-rc.17")
+    implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.17")
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+
+    registerFeature("optional") {
+        usingSourceSet(sourceSets["main"])
+    }
+
+    withSourcesJar()
 }
 
 tasks {
     withType<JavaCompile> {
         options.encoding = "UTF-8"
+        options.compilerArgs.add("-parameters")
     }
 
     shadowJar {
-        relocate("me.dave.chatcolorhandler", "me.dave.configurableplaceholders.libraries.chatcolor")
+        relocate("org.lushplugins.chatcolorhandler", "org.lushplugins.configurableplaceholders.libraries.chatcolor")
 
-        val folder = System.getenv("pluginFolder_1-20")
-        if (folder != null) destinationDirectory.set(file(folder))
+        minimize()
+
         archiveFileName.set("${project.name}-${project.version}.jar")
     }
 
     processResources{
-        expand(project.properties)
+        filesMatching("plugin.yml") {
+            expand(project.properties)
+        }
 
         inputs.property("version", rootProject.version)
         filesMatching("plugin.yml") {
             expand("version" to rootProject.version)
+        }
+    }
+
+    runServer {
+        minecraftVersion("1.21.11")
+
+        downloadPlugins {
+            modrinth("viaversion", "5.7.1")
+            modrinth("viabackwards", "5.7.1")
         }
     }
 }

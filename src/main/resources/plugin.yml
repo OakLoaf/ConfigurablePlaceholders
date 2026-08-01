@@ -1,13 +1,8 @@
 name: ConfigurablePlaceholders
 version: '${version}'
-main: me.dave.configurableplaceholders.ConfigurablePlaceholders
+main: org.lushplugins.configurableplaceholders.ConfigurablePlaceholders
 api-version: '1.20'
+github-repo: OakLoaf/ConfigurablePlaceholders
 depend:
   - floodgate
   - PlaceholderAPI
-commands:
-  configurableplaceholders:
-    aliases:
-      - cplaceholders
-    description: Main ConfigurablePlaceholders command
-    usage: /configurableplaceholders
