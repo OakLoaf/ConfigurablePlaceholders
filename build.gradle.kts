@@ -4,8 +4,6 @@ plugins {
     id("xyz.jpenilla.run-paper") version("3.0.2")
 }
 
-group = "me.dave"
-version = "1.1-BETA"
 group = "org.lushplugins"
 version = "2.0.0"
 
