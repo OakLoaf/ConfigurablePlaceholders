@@ -1,5 +1,5 @@
 name: ConfigurablePlaceholders
-version: '${version}'
+version: '${project.version}'
 main: org.lushplugins.configurableplaceholders.ConfigurablePlaceholders
 api-version: '1.20'
 github-repo: OakLoaf/ConfigurablePlaceholders
